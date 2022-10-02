@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+
+        <style>
+            [v-cloak]{
+                display: none;
+            }
+
+            input{
+                margin: 10px;
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app" v-cloak>
+            <!-- un custom component -->
+            <custom-form/>
+        </div>
+
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+        <script>
+            let app = Vue.createApp({
+                data: () => ({
+                }),
+
+                methods:{
+                }
+            })
+            
+            // creación de un componente
+            app.component("custom-form", {
+                template: `<form @submit.prevent="handleSubmit">
+                    <h1>{{title}}</h1>
+                    
+                    <!--con v-bind puedo pasar props-->
+                    <custom-input v-model="email" :label="emailLabel"/>
+                    <!--también puedo escribir atributos para crear props y darles un valor-->
+                    <custom-input v-model="password" :label="passwordLabel"/>
+                    
+                    <button>log in</button>
+                </form>`,
+
+                // los componentes que va a renderizar
+                components: ["custom-input"],
+
+                data(){
+                    return{
+                        title: "login form",
+                        email: "",
+                        password: "",
+                        emailLabel: "email",
+                        passwordLabel: "password"
+                    }
+                },
+
+                methods:{
+                    handleSubmit(){
+                        console.log(this.email, this.password)
+                    }
+                }
+            })
+
+            app.component("custom-input", {
+                template: `<label>
+                    {{label}}
+
+                    <input :type="type" v-model="inputValue"/>
+
+                    <div>{{inputValue}}</div>
+                </label>`,
+
+
+                props: [
+                    "label", 
+                    "type", 
+                    "texto", 
+                    "modelValue"        // modelValue agarra el estado que le dí en v-model
+                ],
+
+                computed: {
+                    inputValue:{
+                        get(){
+                            return this.modelValue
+                        },
+
+                        set(value){
+                            // se setea el estado del padre con el valor del hijo
+                            this.$emit("update:modelValue", value)
+                        }
+                    }
+                },
+                
+                // data(){
+                //     return{
+                //         inputValue:""
+                //     }
+                // }
+            })
+
+            app.mount("#app")
+        </script>
+    </body>
+</html>
