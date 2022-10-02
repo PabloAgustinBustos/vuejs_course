@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+
+        <style>
+            .input{
+                width: 300px;
+                height: 2em;
+                outline: none;
+                border: .2px solid black;
+                border-radius: 5px;
+            }
+
+            .box{
+                width: 230px;
+                height: 230px;
+            }
+
+            .red{
+                background-color: rgb(200, 49, 49);
+            }
+
+            [v-cloak]{
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+
+        <!-- el contenedor root no se considera parte de la app -->
+        <div id="app" v-cloak>
+            {{greeting}}
+
+            <input v-model="name" />
+            <p>tu nombre es: {{name || "nameTest"}}</p>
+
+            <div v-if="isVisible">se renderiza el primero</div>
+            <div v-else-if="isVisible2">segundo elemento</div>
+            <div v-else>ultimo elemento</div>
+
+            <span v-html="greeting"></span>
+
+            <div :class="[box, red]"></div>
+
+            <input v-bind="inputAtt">
+
+            
+        </div>
+
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        
+        <script>
+            // recibe un objeto llamado option
+            let app = Vue.createApp({
+                data: () => {
+                    return{
+                        greeting: "hello Vue 3",
+                        name: "",
+                        isVisible: true,
+                        isVisible2: true,
+                        box: "box",
+                        red: "red",
+                        
+                        inputAtt: {
+                            class: "input",
+                            type: "text",
+                            placeholder: "ingresa tu nombre"
+                        }
+                    }
+                }
+            })
+
+            // le digo que monte la app en el componente root
+            // se puede mandar un string o un elemento del DOM
+            // el método es llamado luego de las configuraciónes y seteos
+            app.mount("#app")
+        </script>
+    </body>
+</html>
