@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+
+        <style>
+            .box{
+                width: 120px;
+                height: 120px;
+                background-color: aqua;
+            }
+
+            [v-cloak]{
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+
+        <!-- el contenedor root no se considera parte de la app -->
+        <div id="app" v-cloak>
+            <input v-if="checked" @keyup.enter="setNombre('nombre seteado')" type="text" v-model="name">
+            <span v-else>{{name}}</span>
+
+            <br>
+            
+            <label>editar</label>
+            <input type="checkbox" @click="checked = !checked" :checked="checked">
+
+            <br><br>
+
+            <button v-on:click="changeState">{{isVisible ? 'hide box' : 'show box'}}</button>
+            <div v-if="isVisible" class="box"></div>
+        </div>
+
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        
+        <script>
+            Vue.createApp({
+                data: () => ({
+                    checked: false,
+                    isVisible: false,
+                    name:""
+                }),
+
+                methods:{
+                    changeState: function(){
+                        console.log("me estoy ejecutando", this.isVisible)
+                        this.isVisible = !this.isVisible
+                    },
+
+                    setNombre(info){
+                        alert(info)
+
+                        this.checked = false
+                    }
+                }
+            }).mount("#app")
+        </script>
+    </body>
+</html>
