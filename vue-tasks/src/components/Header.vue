@@ -1,7 +1,11 @@
 <template>
     <header>
-        <h1>{{title}}</h1>
-        <Button @click="onClick()" text="Add new Task" color="green" />
+        <h1>Task Tracker</h1>
+        <Button 
+            @click="$emit('toggleForm')" 
+            :text="showForm ? 'close form' : 'add new task'" 
+            :color="showForm ? 'red' : 'green'" 
+        />
     </header>
 </template>
 
@@ -13,7 +17,7 @@
         components: {
             Button,
         },
-        props: ["title"],
+        props: ["title", "buttonText", "showForm"],
         methods: {
             onClick(){
                 console.log("click")
